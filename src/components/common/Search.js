@@ -9,6 +9,7 @@ class Search extends React.Component {
     super();
 
     this.state = {
+      searchResults: [],
       searchQuery: '',
       loading: false,
     };
@@ -26,14 +27,36 @@ class Search extends React.Component {
       return '';
     }
 
+    this.setState({ loading: true });
+
     fetch(`${API_URL}/autocomplete?searchQuery=${searchQuery}`)
       .then(handleResponse)
       .then(result => {
-        console.log(result);
+        this.setState({
+          loading: false,
+          searchResults: result,
+        });
       });
   }
 
+  renderSearchResults() {
+    const { searchResults } = this.state;
+
+    return (
+      <div className="Search-result-container">
+        {searchResults.map(result => (
+          <div key={result.id} className="Search-result">
+            {result.name}
+            {result.symbol}
+          </div>
+        ))}
+      </div>
+    );
+  }
+
   render() {
+    const { loading } = this.state;
+
     return (
       <div className="Search">
         <span className="Search-icon" />
@@ -43,9 +66,11 @@ class Search extends React.Component {
           placeholder="Currency name"
           onChange={this.handleChange}
         />
-        <div className="Search-loading">
-          <Loading width="12px" height="12px" />
-        </div>
+        {loading && (
+          <div className="Search-loading">
+            <Loading width="12px" height="12px" />
+          </div>
+        )}
       </div>
     );
   }
