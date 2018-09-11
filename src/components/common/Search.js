@@ -40,18 +40,29 @@ class Search extends React.Component {
   }
 
   renderSearchResults() {
-    const { searchResults } = this.state;
+    const { searchResults, searchQuery } = this.state;
 
-    return (
-      <div className="Search-result-container">
-        {searchResults.map(result => (
-          <div key={result.id} className="Search-result">
-            {result.name}
-            {result.symbol}
-          </div>
-        ))}
-      </div>
-    );
+    if (!searchQuery) {
+      return '';
+    }
+
+    if (searchResults.length > 0) {
+      return (
+        <div className="Search-result-container">
+          {searchResults.map(result => (
+            <div key={result.id} className="Search-result">
+              {result.name} ({result.symbol})
+            </div>
+          ))}
+        </div>
+      );
+    } else {
+      return (
+        <div className="Search-result-container">
+          <div className="Search-no-result">No results</div>
+        </div>
+      );
+    }
   }
 
   render() {
@@ -71,6 +82,7 @@ class Search extends React.Component {
             <Loading width="12px" height="12px" />
           </div>
         )}
+        {this.renderSearchResults()}
       </div>
     );
   }
