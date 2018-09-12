@@ -10,5 +10,5 @@ app.get('*', (req, res) => {
 const port = process.env.PORT || 9000;
 
 app.listen(port, () => {
-  console.log('on port 9000');
+  console.log('Server launched on http://localhost:9000/');
 });
